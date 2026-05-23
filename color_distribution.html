@@ -5,18 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Art Palette Explorer</title>
     <style>
-      :root {
-        --bg: #f8f3e9;
-        --card: #fffaf0;
-        --ink: #1f1a14;
-        --muted: #6d6358;
-        --stroke: #d8cfc1;
-        --accent: #af5d2b;
-        --accent-2: #2f6f78;
-        --shadow: 0 24px 40px rgba(35, 23, 8, 0.14);
-        --radius: 18px;
-      }
-
+        background: #fff;
       * {
         box-sizing: border-box;
       }
@@ -25,24 +14,17 @@
         margin: 0;
         min-height: 100vh;
         font-family: "Segoe UI", "Trebuchet MS", sans-serif;
-        color: var(--ink);
-        background:
-          radial-gradient(
-            circle at 14% 20%,
-            rgba(175, 93, 43, 0.2) 0%,
-            rgba(175, 93, 43, 0) 45%
-          ),
-          radial-gradient(
-            circle at 85% 12%,
-            rgba(47, 111, 120, 0.22) 0%,
-            rgba(47, 111, 120, 0) 42%
-          ),
-          linear-gradient(145deg, #f9f5ea 0%, #efe5d4 45%, #f4ecdd 100%);
+        color: var( --ink);
+        background: #fff;
       }
 
       .app-shell {
         width: min(1220px, calc(100% - 32px));
         margin: 20px auto 40px;
+      }
+
+      .app-shell div {
+        background: #fff;
       }
 
       .topbar {
@@ -54,7 +36,7 @@
         padding: 16px 18px;
         border: 1px solid var(--stroke);
         border-radius: var(--radius);
-        background: rgba(255, 248, 236, 0.82);
+        background: #fff;
         backdrop-filter: blur(8px);
         box-shadow: var(--shadow);
       }
@@ -133,178 +115,26 @@
         overflow: hidden;
       }
 
-      .main-grid {
-        display: grid;
-        grid-template-columns: 1.45fr 1fr;
-        min-height: 520px;
-      }
-
-      .image-panel {
-        position: relative;
-        border-right: 1px solid var(--stroke);
-        overflow: hidden;
-      }
-
-      .hero-image {
-        width: 100%;
-        height: 100%;
-        min-height: 520px;
-        object-fit: cover;
-        display: block;
-        transform: scale(1.02);
-        transition: opacity 220ms ease;
-      }
-
-      .image-overlay {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        padding: 18px;
-        color: #fff8ec;
-        background: linear-gradient(
-          to top,
-          rgba(19, 16, 12, 0.82),
-          rgba(19, 16, 12, 0)
-        );
-      }
-
-      .image-title {
-        margin: 0;
-        font-size: 1.08rem;
-        font-weight: 700;
-        max-width: 90%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .image-subtitle {
-        margin: 6px 0 0;
-        font-size: 0.82rem;
-        opacity: 0.86;
-      }
-
-      .palette-panel {
-        padding: 18px;
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        background: linear-gradient(180deg, #fff9ee 0%, #f7ecdc 100%);
-      }
-
-      .panel-title {
-        margin: 0;
-        font-size: 0.76rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-
-      .palette-list {
-        display: flex;
-        flex-direction: column;
-        gap: 9px;
-      }
-
-      .palette-row {
-        display: grid;
-        grid-template-columns: 56px minmax(120px, 1fr) auto;
-        gap: 10px;
-        align-items: center;
-        border: 1px solid rgba(162, 132, 101, 0.2);
-        border-radius: 12px;
-        padding: 7px;
-        background: rgba(255, 249, 236, 0.65);
-        cursor: pointer;
-        transition:
-          border-color 140ms ease,
-          transform 140ms ease;
-      }
-
-      .palette-row:hover {
-        border-color: rgba(118, 89, 55, 0.5);
-        transform: translateY(-1px);
-      }
-
-      .swatch {
-        height: 32px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.75);
-        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-      }
-
-      .bar-wrap {
-        height: 8px;
-        border-radius: 999px;
-        background: rgba(119, 91, 59, 0.14);
-        overflow: hidden;
-      }
-
-      .bar {
-        height: 100%;
-        border-radius: inherit;
-        transition: width 220ms ease;
-      }
-
-      .hex {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #5c4f42;
-        letter-spacing: 0.03em;
-      }
-
-      .palette-strip {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 6px;
-        margin-top: 2px;
-        height: 32px;
-      }
-
-      .meta-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
-      }
-
-      .meta-card {
-        border: 1px solid rgba(156, 129, 101, 0.3);
-        border-radius: 10px;
-        background: rgba(255, 250, 241, 0.74);
-        padding: 8px;
-      }
-
-      .meta-label {
-        font-size: 0.68rem;
-        text-transform: uppercase;
-        color: var(--muted);
-        letter-spacing: 0.08em;
-        margin: 0;
-      }
-
-      .meta-value {
-        margin: 4px 0 0;
-        font-size: 0.92rem;
-        font-weight: 700;
-      }
-
       .filmstrip {
         border-top: 1px solid var(--stroke);
         background: #f7e9d5;
         padding: 14px;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-auto-rows: 20px;
+        grid-auto-flow: dense;
         gap: 10px;
-        max-height: 265px;
-        overflow-y: auto;
       }
 
       .thumb {
-        border: 1px solid rgba(125, 97, 66, 0.3);
-        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin: 0;
+        border: 1px solid transparent;
+        border-radius: 0;
         overflow: hidden;
-        background: #fff6e8;
+        background: transparent;
         cursor: pointer;
         transition:
           transform 150ms ease,
@@ -313,49 +143,52 @@
 
       .thumb:hover {
         transform: translateY(-2px);
-        border-color: rgba(82, 132, 141, 0.8);
+        border-color: transparent;
       }
 
       .thumb.active {
-        border-color: var(--accent-2);
-        box-shadow: inset 0 0 0 1px rgba(47, 111, 120, 0.45);
+        border-color: transparent;
+        box-shadow: none;
       }
 
       .thumb img {
         width: 100%;
-        height: 86px;
-        object-fit: cover;
+        height: auto;
+        max-width: none;
+        object-fit: contain;
         display: block;
       }
 
+      .thumb.featured {
+        grid-column: span 2;
+      }
+
+      .thumb.featured img {
+        height: auto;
+        object-fit: contain;
+      }
+
+      .thumb-strip {
+        height: 12px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0;
+        margin-top: 4px;
+        border-top: 1px solid rgba(125, 97, 66, 0.25);
+      }
+
+      .thumb-strip-color {
+        width: 100%;
+        height: 100%;
+      }
+
       .thumb-name {
-        margin: 0;
-        padding: 8px 8px 7px;
-        font-size: 0.73rem;
-        line-height: 1.25;
-        color: #584c3f;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        display: none;
       }
 
       @media (max-width: 960px) {
-        .main-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .image-panel {
-          border-right: none;
-          border-bottom: 1px solid var(--stroke);
-        }
-
-        .hero-image {
-          min-height: 320px;
-          max-height: 420px;
-        }
-
-        .meta-grid {
-          grid-template-columns: 1fr;
+        .thumb.featured {
+          grid-column: span 1;
         }
       }
     </style>
@@ -380,35 +213,6 @@
       </header>
 
       <section class="stage">
-        <div class="main-grid">
-          <div class="image-panel">
-            <img id="heroImage" class="hero-image" alt="Imagen seleccionada" />
-            <div class="image-overlay">
-              <p id="imageTitle" class="image-title"></p>
-              <p id="imageSubtitle" class="image-subtitle"></p>
-            </div>
-          </div>
-
-          <aside class="palette-panel">
-            <p class="panel-title">Paleta activa</p>
-            <div id="paletteStrip" class="palette-strip"></div>
-            <div id="paletteList" class="palette-list"></div>
-            <div class="meta-grid">
-              <article class="meta-card">
-                <p class="meta-label">Dominante</p>
-                <p id="dominantHex" class="meta-value">-</p>
-              </article>
-              <article class="meta-card">
-                <p class="meta-label">Temperatura</p>
-                <p id="temperature" class="meta-value">-</p>
-              </article>
-              <article class="meta-card">
-                <p class="meta-label">Luminosidad</p>
-                <p id="brightness" class="meta-value">-</p>
-              </article>
-            </div>
-          </aside>
-        </div>
         <div id="filmstrip" class="filmstrip"></div>
       </section>
     </div>
@@ -4879,15 +4683,7 @@
           ],
         },
       ];
-      const heroImage = document.getElementById("heroImage");
-      const imageTitle = document.getElementById("imageTitle");
-      const imageSubtitle = document.getElementById("imageSubtitle");
-      const paletteList = document.getElementById("paletteList");
-      const paletteStrip = document.getElementById("paletteStrip");
       const filmstrip = document.getElementById("filmstrip");
-      const dominantHex = document.getElementById("dominantHex");
-      const temperature = document.getElementById("temperature");
-      const brightness = document.getElementById("brightness");
       const uploadInput = document.getElementById("uploadInput");
       const randomBtn = document.getElementById("randomBtn");
       const copyBtn = document.getElementById("copyBtn");
@@ -4930,13 +4726,6 @@
         );
       }
 
-      function tempLabel(rgb) {
-        const warm = rgb[0] - rgb[2];
-        if (warm > 28) return "Calida";
-        if (warm < -28) return "Fria";
-        return "Neutra";
-      }
-
       function currentItem() {
         return customEntry || library[activeIndex];
       }
@@ -4967,29 +4756,6 @@
           .sort((a, b) => a.score - b.score);
       }
 
-      function closestImageByColor(target) {
-        let best = 0;
-        let bestScore = Number.POSITIVE_INFINITY;
-
-        library.forEach((item, idx) => {
-          const score = item.palette.reduce((sum, color) => {
-            return Math.min(sum, colorDistance(color, target));
-          }, Number.POSITIVE_INFINITY);
-
-          if (score < bestScore) {
-            bestScore = score;
-            best = idx;
-          }
-        });
-
-        return best;
-      }
-
-      function estimateWeights(palette) {
-        const base = [40, 22, 16, 12, 10];
-        return palette.map((_, i) => base[i] || 8);
-      }
-
       function renderFilmstrip() {
         filmstrip.innerHTML = "";
 
@@ -4998,11 +4764,23 @@
 
         const ranked = rankedLibraryByCurrentPalette(item.palette);
 
-        ranked.forEach(({ item: rankedItem, idx: sourceIndex }) => {
+        ranked.forEach(({ item: rankedItem, idx: sourceIndex }, rankIndex) => {
+          const thumbStripMarkup = rankedItem.palette
+            .map(
+              (color) =>
+                '<span class="thumb-strip-color" style="background:' +
+                toRgbString(color) +
+                '"></span>',
+            )
+            .join("");
+
           const card = document.createElement("button");
           card.className =
             "thumb" +
             (sourceIndex === activeIndex && !customEntry ? " active" : "");
+          if (rankIndex === 0) {
+            card.classList.add("featured");
+          }
           card.type = "button";
           card.title = rankedItem.filename;
           card.innerHTML =
@@ -5013,7 +4791,21 @@
             '">' +
             '<p class="thumb-name">' +
             rankedItem.filename +
-            "</p>";
+            "</p>" +
+            '<div class="thumb-strip">' +
+            thumbStripMarkup +
+            "</div>";
+
+          const thumbImg = card.querySelector("img");
+          if (thumbImg) {
+            thumbImg.addEventListener("load", () => {
+              requestAnimationFrame(updateFilmstripMasonrySpans);
+            });
+            if (thumbImg.complete) {
+              requestAnimationFrame(updateFilmstripMasonrySpans);
+            }
+          }
+
           card.addEventListener("click", () => {
             customEntry = null;
             activeIndex = sourceIndex;
@@ -5021,85 +4813,30 @@
           });
           filmstrip.appendChild(card);
         });
+
+        requestAnimationFrame(updateFilmstripMasonrySpans);
+        setTimeout(updateFilmstripMasonrySpans, 120);
       }
 
-      function renderPalette(item) {
-        paletteStrip.innerHTML = "";
-        paletteList.innerHTML = "";
-        const weights = estimateWeights(item.palette);
+      function updateFilmstripMasonrySpans() {
+        const filmstripStyle = getComputedStyle(filmstrip);
+        const rowUnit = parseFloat(filmstripStyle.gridAutoRows) || 20;
+        const rowGap = parseFloat(filmstripStyle.rowGap) || 10;
+        const cards = filmstrip.querySelectorAll(".thumb");
 
-        item.palette.forEach((color, idx) => {
-          const hex = toHex(color);
-
-          const stripCell = document.createElement("div");
-          stripCell.className = "swatch";
-          stripCell.style.background = toRgbString(color);
-          stripCell.title = hex;
-          paletteStrip.appendChild(stripCell);
-
-          const row = document.createElement("button");
-          row.className = "palette-row";
-          row.type = "button";
-          row.title = "Buscar imagen similar por color";
-
-          const swatch = document.createElement("div");
-          swatch.className = "swatch";
-          swatch.style.background = toRgbString(color);
-
-          const barWrap = document.createElement("div");
-          barWrap.className = "bar-wrap";
-          const bar = document.createElement("div");
-          bar.className = "bar";
-          bar.style.width = weights[idx] + "%";
-          bar.style.background = toRgbString(color);
-          barWrap.appendChild(bar);
-
-          const hexLabel = document.createElement("span");
-          hexLabel.className = "hex";
-          hexLabel.textContent = hex;
-
-          row.appendChild(swatch);
-          row.appendChild(barWrap);
-          row.appendChild(hexLabel);
-
-          row.addEventListener("click", () => {
-            if (customEntry) {
-              const jump = closestImageByColor(color);
-              customEntry = null;
-              activeIndex = jump;
-              render();
-              return;
-            }
-
-            activeIndex = closestImageByColor(color);
-            render();
-          });
-
-          paletteList.appendChild(row);
+        cards.forEach((card) => {
+          const height = card.scrollHeight;
+          const span = Math.max(
+            1,
+            Math.ceil((height + rowGap) / (rowUnit + rowGap)),
+          );
+          card.style.gridRowEnd = "span " + span;
         });
       }
 
       function render() {
         const item = currentItem();
         if (!item) return;
-
-        heroImage.style.opacity = "0.6";
-        heroImage.onload = () => {
-          heroImage.style.opacity = "1";
-        };
-        heroImage.src = item.path;
-        heroImage.alt = item.filename;
-        imageTitle.textContent = item.filename;
-        imageSubtitle.textContent = customEntry
-          ? "Imagen subida por el usuario"
-          : "Coleccion local";
-
-        renderPalette(item);
-
-        const dom = item.dominant_color || item.palette[0];
-        dominantHex.textContent = toHex(dom);
-        temperature.textContent = tempLabel(dom);
-        brightness.textContent = luminance(dom) + "%";
         renderFilmstrip();
       }
 
@@ -5247,6 +4984,9 @@
         }
       });
 
+      if (library.length) {
+        activeIndex = Math.floor(Math.random() * library.length);
+      }
       render();
     </script>
   </body>
