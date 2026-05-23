@@ -4690,6 +4690,7 @@
 
       let customEntry = null;
       let activeIndex = 0;
+      let precomputedSimilarity = null;
 
       const library = imageData
         .filter(
@@ -4756,13 +4757,49 @@
           .sort((a, b) => a.score - b.score);
       }
 
+      function rankedLibraryByPrecomputedIndex(baseIndex) {
+        if (
+          !precomputedSimilarity ||
+          !precomputedSimilarity.rankedIndicesBySource
+        ) {
+          return null;
+        }
+
+        const indexKey = String(baseIndex);
+        const rankedIndices =
+          precomputedSimilarity.rankedIndicesBySource[indexKey] ||
+          precomputedSimilarity.rankedIndicesBySource[baseIndex];
+
+        if (!Array.isArray(rankedIndices)) {
+          return null;
+        }
+
+        return rankedIndices
+          .map((idx) => ({ item: library[idx], idx, score: 0 }))
+          .filter((entry) => entry.item);
+      }
+
+      async function loadPrecomputedSimilarity() {
+        try {
+          const response = await fetch("precomputed_similarity.json", {
+            cache: "force-cache",
+          });
+          if (!response.ok) return;
+          precomputedSimilarity = await response.json();
+        } catch (_error) {
+          precomputedSimilarity = null;
+        }
+      }
+
       function renderFilmstrip() {
         filmstrip.innerHTML = "";
 
         const item = currentItem();
         if (!item) return;
 
-        const ranked = rankedLibraryByCurrentPalette(item.palette);
+        const ranked =
+          (!customEntry && rankedLibraryByPrecomputedIndex(activeIndex)) ||
+          rankedLibraryByCurrentPalette(item.palette);
 
         ranked.forEach(({ item: rankedItem, idx: sourceIndex }, rankIndex) => {
           const thumbStripMarkup = rankedItem.palette
@@ -4915,10 +4952,16 @@
         }
       });
 
-      if (library.length) {
-        activeIndex = Math.floor(Math.random() * library.length);
+      async function initApp() {
+        if (library.length) {
+          activeIndex = Math.floor(Math.random() * library.length);
+        }
+
+        await loadPrecomputedSimilarity();
+        render();
       }
-      render();
+
+      initApp();
     </script>
   </body>
 </html>
