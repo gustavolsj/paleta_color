@@ -102,10 +102,6 @@
         background: linear-gradient(120deg, #c77744 0%, #ae552d 100%);
       }
 
-      #uploadInput {
-        display: none;
-      }
-
       .stage {
         margin-top: 18px;
         border: 1px solid var(--stroke);
@@ -170,10 +166,17 @@
 
       .thumb-strip {
         height: 12px;
+        min-height: 12px;
+        max-height: 12px;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 0;
+        width: 50%;
+        gap: 2px;
         margin-top: 4px;
+        margin-left: 0;
+        margin-right: 0;
+        align-self: flex-start;
+        box-sizing: border-box;
         border-top: 1px solid rgba(125, 97, 66, 0.25);
       }
 
@@ -201,8 +204,6 @@
           <h1>Art Palette Explorer</h1>
         </div>
         <div class="actions">
-          <label class="file-label" for="uploadInput">Subir imagen</label>
-          <input id="uploadInput" type="file" accept="image/*" />
           <button id="randomBtn" class="btn" type="button">
             Imagen aleatoria
           </button>
@@ -4684,7 +4685,6 @@
         },
       ];
       const filmstrip = document.getElementById("filmstrip");
-      const uploadInput = document.getElementById("uploadInput");
       const randomBtn = document.getElementById("randomBtn");
       const copyBtn = document.getElementById("copyBtn");
 
@@ -4890,75 +4890,6 @@
         return centers;
       }
 
-      function extractPaletteFromImage(url) {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.crossOrigin = "anonymous";
-
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d", { willReadFrequently: true });
-            if (!ctx) {
-              reject(new Error("No se pudo leer el contexto del canvas"));
-              return;
-            }
-
-            const targetW = 200;
-            const scale = targetW / img.width;
-            canvas.width = targetW;
-            canvas.height = Math.max(120, Math.round(img.height * scale));
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-            const { data } = ctx.getImageData(
-              0,
-              0,
-              canvas.width,
-              canvas.height,
-            );
-            const pixels = [];
-
-            for (let i = 0; i < data.length; i += 16) {
-              const alpha = data[i + 3];
-              if (alpha < 200) continue;
-              pixels.push([data[i], data[i + 1], data[i + 2]]);
-            }
-
-            if (!pixels.length) {
-              reject(new Error("No se detectaron pixeles validos"));
-              return;
-            }
-
-            const palette = quantizeColors(pixels, 5).sort(
-              (a, b) => luminance(b) - luminance(a),
-            );
-            resolve(palette);
-          };
-
-          img.onerror = () => reject(new Error("No se pudo cargar la imagen"));
-          img.src = url;
-        });
-      }
-
-      uploadInput.addEventListener("change", async (event) => {
-        const file = event.target.files && event.target.files[0];
-        if (!file) return;
-
-        const objectUrl = URL.createObjectURL(file);
-        try {
-          const palette = await extractPaletteFromImage(objectUrl);
-          customEntry = {
-            filename: file.name,
-            path: objectUrl,
-            dominant_color: palette[0],
-            palette,
-          };
-          render();
-        } catch (err) {
-          alert("No fue posible extraer la paleta de esta imagen.");
-          URL.revokeObjectURL(objectUrl);
-        }
-      });
-
       randomBtn.addEventListener("click", () => {
         customEntry = null;
         activeIndex = Math.floor(Math.random() * library.length);
@@ -4969,7 +4900,7 @@
         const item = currentItem();
         if (!item || !navigator.clipboard) return;
 
-        const output = item.palette.map((color) => toHex(color)).join(" ");
+        const output = JSON.stringify({ palette: item.palette });
         try {
           await navigator.clipboard.writeText(output);
           copyBtn.textContent = "Paleta copiada";
